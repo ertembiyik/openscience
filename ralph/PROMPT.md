@@ -16,24 +16,24 @@ Work through the task list below IN ORDER. Each iteration, pick the highest-prio
 ## Task List
 
 ### Phase 1: Environment & Data (priority: HIGH)
-- [ ] Set up Python bioinformatics environment (requirements.txt with PyTorch, BioPython, pandas, scikit-learn, transformers)
-- [ ] Download and explore IEDB dataset -- document structure, size, key fields
-- [ ] Download and explore TESLA benchmark dataset -- document what's available
-- [ ] Write data loading utilities for both datasets
-- [ ] Exploratory data analysis: distributions, class balance, data quality
+- [x] Set up Python bioinformatics environment (uv, Python 3.12, PyTorch, BioPython, pandas, scikit-learn, transformers, MHCflurry)
+- [x] Download and explore IEDB dataset -- 122,543 human MHC-I T-cell assays, 44.9% positive rate
+- [x] Download and explore TESLA benchmark dataset -- 608 peptides, 37 immunogenic (6.1%), from Cell 2020 paper
+- [x] Write data loading utilities for both datasets (tools/data_loader.py)
+- [x] Exploratory data analysis: distributions, class balance, data quality
 
 ### Phase 2: Baselines (priority: HIGH)
-- [ ] Install and run MHCflurry on IEDB/TESLA data -- record baseline accuracy
-- [ ] Install and run NetMHCpan (or available alternative) -- record baseline
-- [ ] Document exactly where current tools fail (error analysis)
-- [ ] Write benchmark evaluation script (standardized metrics: AUC, precision, recall, F1)
+- [x] Install and run MHCflurry on IEDB/TESLA data -- best: 0.759 AUC-ROC, 0.188 AUPRC
+- [x] Install and run NetMHCpan (or available alternative) -- 0.747 AUC-ROC, 0.150 AUPRC (from TESLA pre-computed)
+- [x] Document exactly where current tools fail (error analysis) -- see research/02-error-analysis-and-multifeature.md
+- [x] Write benchmark evaluation script (tools/evaluate.py -- AUPRC, AUC-ROC, FR, TTIF)
 
 ### Phase 3: Literature Deep Dives (priority: MEDIUM)
-- [ ] Read and summarize ImmunoNX paper (arxiv 2512.08226) -- architecture, results, limitations
+- [x] Read and summarize ImmunoNX paper (arxiv 2512.08226) -- it's a workflow paper, not a model
+- [x] Research protein language models (ESM-2) for feature extraction -- ImmugenX found ESM-2 alone doesn't help
+- [x] Research latest immunogenicity prediction approaches (2024-2026 papers) -- NeoaPred, BigMHC, ImmugenX, NUCC, CNNeoPP, NeoTImmuML
+- [x] Write literature review document with comparative analysis -- see research/03-literature-review.md
 - [ ] Read and summarize NeoDisc paper (Nature Biotech 2024) -- what's new
-- [ ] Research protein language models (ESM-2) for feature extraction -- how others use them
-- [ ] Research latest immunogenicity prediction approaches (2024-2026 papers)
-- [ ] Write literature review document with comparative analysis
 
 ### Phase 4: Model Development (priority: MEDIUM)
 - [ ] Design improved immunogenicity predictor architecture

@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(git init:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git pull:*)",
+      "Bash(uv add:*)",
+      "Bash(uv run python:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl:*)"
     ]
   }
 }

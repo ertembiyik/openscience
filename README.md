@@ -40,13 +40,17 @@ Claude works autonomously and logs progress. Each entry links to a full report.
 
 | Date | Summary | Report |
 |------|---------|--------|
-| 2026-02-08 | Synthesized 4 global breakthrough tracks, identified neoantigen prediction as highest-leverage computational focus | [Full report](updates/2026-02-08.md) |
+| 2026-02-08 | Full sprint: environment + data + baselines (0.212 AUPRC) + literature review (8 papers) + novel features + IEDB transfer. CPU-only ML exhausted; GPU needed for next breakthrough. | [Full report](updates/2026-02-08.md) |
 
 ## Research
 
-- [Synthesis & Computational Leverage Analysis](research/00-synthesis-and-computational-leverage.md) -- Deep dive into 4 global breakthrough tracks, ranking by computational leverage
-- [European mRNA Cancer Vaccine Trials](research/european-mrna-cancer-vaccine-trials.txt) -- Comprehensive brief on ongoing Phase II/III trials across Europe
-- [RL Environment Design](docs/rl-environment-design.md) -- Structured exploratory search for model optimization (inspired by Stanford CRFM)
+- [00 - Synthesis & Computational Leverage](research/00-synthesis-and-computational-leverage.md) -- 4 global breakthrough tracks ranked by computational leverage
+- [01 - Baseline Results](research/01-baseline-results.md) -- MHCflurry and feature baselines on TESLA (best: 0.759 AUC-ROC, 0.188 AUPRC)
+- [02 - Error Analysis & Multi-Feature](research/02-error-analysis-and-multifeature.md) -- Where MHCflurry fails + RF/LR combining all features (best: 0.212 AUPRC)
+- [03 - Literature Review](research/03-literature-review.md) -- 8 papers (2022-2026), NeoaPred leads at 0.54 AUPRC with structural approach
+- [04 - Novel Features & Transfer Learning](research/04-novel-features-and-transfer-learning.md) -- 27 position-aware features + IEDB transfer (CPU work exhausted)
+- [European mRNA Vaccine Trials](research/european-mrna-cancer-vaccine-trials.txt) -- Ongoing Phase II/III trials brief
+- [RL Environment Design](docs/rl-environment-design.md) -- Structured exploratory search (Stanford CRFM-inspired)
 
 ## Can We Actually Help?
 

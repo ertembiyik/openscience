@@ -4,6 +4,10 @@ __pycache__/
 *.pyc
 .env
 data/raw/
+data/iedb/tcell_full_v3.csv
+data/iedb/tcell_full_v3.zip
+data/iedb/iedb_human_mhci_tcell.csv
+data/tesla/.git/
 *.egg-info/
 dist/
 build/
