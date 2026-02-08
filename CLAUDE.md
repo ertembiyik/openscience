@@ -143,26 +143,85 @@ We use structured exploratory search (inspired by [Stanford CRFM fast kernels](h
 
 ---
 
-## Primary Focus: Neoantigen Immunogenicity Prediction
+## Our 6 Shots on Goal
 
-After researching all 4 tracks, we identified **mRNA cancer vaccine neoantigen prediction** as our highest-leverage computational contribution. See `research/00-synthesis-and-computational-leverage.md` for the full analysis.
+After broad research across all major fronts in computational oncology (Feb 2026), we identified **6 independent problem areas** where our SWE + AI skills can make real contributions without a wet lab. Full analysis in `research/04-shots-on-goal.md`.
 
-**The problem**: Given a cancer patient's tumor mutations and immune profile (HLA type), predict which mutated proteins will actually trigger a T-cell immune response when encoded in an mRNA vaccine. Current ML tools achieve ~70-80% for binding prediction but much worse for immunogenicity. Better predictions = more patients respond to vaccines.
+### Shot 1 (P0): Neoantigen Immunogenicity Prediction -- PRIMARY FOCUS
 
-**Key tools to build on**: ImmunoNX, OpenVax, pVACtools, MHCflurry, NetMHCpan, DeepNeo, nextNEOpi
+**The problem**: Given a cancer patient's tumor mutations and immune profile (HLA type), predict which mutated proteins will actually trigger a T-cell immune response when encoded in an mRNA vaccine. Current best: NeoTImmuML at AUC 0.8865, but still not good enough (BioNTech pancreatic trial had only 50% responders).
 
-**Key datasets**: IEDB, TESLA Consortium, TCGA, Human Protein Atlas
+**Key gap**: No tool integrates ALL signals (MHC binding + TCR recognition + clonality + expression + proteasomal processing + structure). We can use Boltz-2 for structural features -- largely missing from current tools.
+
+**Tools**: NeoTImmuML, MHCflurry, NetMHCpan, OpenVax, pVACtools, Boltz-2, DeepNeo
+**Data**: IEDB, TESLA Consortium, TCGA, TumorAgDB2.0, Human Protein Atlas
+
+### Shot 2 (P1): Drug Combination Prediction
+
+**The problem**: Find which drug pairs work synergistically against specific cancers. NIH/MIT achieved 83% hit rate for pancreatic cancer using graph convolutional networks. Pipeline is fully open-source.
+
+**Tools**: PANC1 (github.com/ncats/PANC1), SynerGNet, GraphSynergy
+**Data**: DrugComb (740K experiments), NCI-ALMANAC
+
+### Shot 3 (P2): Cancer Cell Reprogramming
+
+**The problem**: Computationally identify how to reprogram cancer cells back to normal. KAIST's BENEIN (Boolean networks) and UCSD's CANDiT (genome-wide ML, Cell Reports Medicine Oct 2025) both demonstrated this works.
+
+**Tools**: BENEIN, CANDiT, scGPT/CellFM (single-cell foundation models)
+**Data**: TCGA, Human Cell Atlas (scRNA-seq)
+
+### Shot 4 (P2): Liquid Biopsy ML (Early Cancer Detection)
+
+**The problem**: Detect cancer from blood tests using ML on cell-free DNA/RNA fragmentation patterns. Stage I detection is the hardest unsolved problem (17-80% sensitivity depending on approach).
+
+**Tools**: FinaleToolkit, DELFI (github.com/cancer-genomics/delfi_scripts)
+**Data**: FinaleDB, TCGA cfDNA data
+
+### Shot 5 (P3): Digital Pathology AI
+
+**The problem**: Fine-tune open-source pathology foundation models (UNI 2.0, CONCH) for specific cancer questions. 30K TCGA slides are free. Engineering bottleneck, not biology bottleneck.
+
+**Tools**: UNI 2.0 (github.com/mahmoodlab/UNI), CONCH, MedSAM2
+**Data**: TCGA pathology slides (~30K), CAMELYON, PANDA Challenge
+
+### Shot 6 (P3): AI Antibody Design
+
+**The problem**: Design therapeutic antibodies targeting cancer markers. RFantibody (Baker Lab, Nature Nov 2025) designs from scratch with atomic accuracy. Could target neoantigens we identify in Shot 1.
+
+**Tools**: RFantibody (github.com/RosettaCommons/RFantibody), Boltz-2/BoltzGen
+**Data**: PDB, antibody structure databases
+
+### Cross-Cutting Synergies
+
+The shots reinforce each other: drug combos that enhance vaccine response (2→1), reprogramming + vaccination dual strategy (3→1), pathology AI predicting vaccine responders (5→1), liquid biopsy monitoring vaccine response (4→1), Boltz-2 structural features for neoantigen prediction (6→1).
+
+---
+
+## Research Documents
+
+| File | Contents |
+|------|----------|
+| `research/00-synthesis-and-computational-leverage.md` | Original 4-track analysis |
+| `research/01-ai-drug-discovery-and-foundation-models.md` | AI/ML tools landscape, foundation models, drug discovery |
+| `research/02-early-detection-imaging-multiomics.md` | Liquid biopsy, digital pathology, radiomics, multi-omics |
+| `research/03-immunotherapy-reprogramming-synbio.md` | CAR-T, reprogramming, synthetic biology, antibody design |
+| `research/04-shots-on-goal.md` | **THE KEY FILE** -- 6 prioritized problems with tools, data, effort estimates |
+| `research/european-mrna-cancer-vaccine-trials.txt` | European mRNA vaccine trials detail |
+
+---
 
 ## Next Steps
 
 - [x] Deep-dive into each breakthrough: read actual papers
 - [x] Identify which approach has the highest computational leverage
 - [x] Map the research landscape: who is doing what, where are the gaps
+- [x] Broaden scope: identify multiple "shots on goal" across different fields
 - [ ] Set up bioinformatics toolchain (Python, BioPython, PyTorch, genomic tools)
 - [ ] Download and explore IEDB and TESLA benchmark datasets
-- [ ] Reproduce baseline results from existing neoantigen prediction tools
+- [ ] Reproduce baseline results from existing neoantigen prediction tools (NeoTImmuML)
+- [ ] Reproduce PANC1 drug combination pipeline on pancreatic cancer
 - [ ] Identify where current approaches fail (error analysis)
-- [ ] Design improved immunogenicity predictor
+- [ ] Design improved immunogenicity predictor (integrate structural features via Boltz-2)
 - [ ] Draft outreach list: researchers we may want to contact
 
 ---
