@@ -1,0 +1,11 @@
+.context/
+ralph/logs/
+__pycache__/
+*.pyc
+.env
+data/raw/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
