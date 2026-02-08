@@ -102,12 +102,33 @@ The era of "poison everything and hope the cancer dies first" is ending. The fut
 ```
 cancer-treatment-research/
 ├── CLAUDE.md                  # This file -- project context and instructions
+├── README.md                  # Public-facing project description
 ├── research/                  # Literature reviews, paper summaries, notes
+├── updates/                   # Daily progress reports (YYYY-MM-DD.md)
 ├── data/                      # Datasets, genomic data, clinical trial data
-├── simulations/               # Computational models and simulations
 ├── tools/                     # Bioinformatics tools and utilities
-└── docs/                      # Documentation, correspondence drafts, plans
+├── docs/                      # Documentation, designs, correspondence drafts
+├── ralph/                     # Autonomous research loop (Ralph loop)
+│   ├── run.sh                 # Loop runner script
+│   ├── PROMPT.md              # Research PRD for autonomous iterations
+│   └── progress.md            # State serialization between iterations
+└── .claude/commands/          # Claude Code skills
+    └── daily-update.md        # Daily progress update generator
 ```
+
+## Autonomous Research (Ralph Loop)
+
+Claude runs autonomously via a Ralph loop -- a bash loop that repeatedly invokes Claude Code with clean context. Each iteration:
+1. Reads the PRD (`ralph/PROMPT.md`) and accumulated progress (`ralph/progress.md`)
+2. Picks the next incomplete task
+3. Does the work, commits results
+4. Serializes learnings to progress.md for the next iteration
+
+Run with: `./ralph/run.sh [iterations]`
+
+## RL-Guided Model Search
+
+We use structured exploratory search (inspired by [Stanford CRFM fast kernels](https://crfm.stanford.edu/2025/05/28/fast-kernels.html)) to systematically improve our immunogenicity predictor. See `docs/rl-environment-design.md` for the full design.
 
 ---
 
