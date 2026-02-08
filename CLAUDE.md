@@ -210,6 +210,29 @@ The shots reinforce each other: drug combos that enhance vaccine response (2→1
 
 ---
 
+## Current Lab Status (auto-updated by orchestrator)
+
+**Last updated**: 2026-02-08
+**Phase**: Phase 0 -- Lab Setup
+**Active agents**: none (lab just created)
+**Blockers**: GPU access (JOB-001), TESLA data (JOB-002)
+**Key metrics**: No baselines yet. Target: beat NeoTImmuML AUC 0.8865.
+**Knowledge base**: lab/kb/ (findings, dead-ends, open-questions, tool/dataset evaluations)
+**Task queue**: lab/tasks/ (18 tasks across 4 phases, seeded from ralph/PROMPT.md)
+
+---
+
+## Research Lab
+
+The project runs an autonomous multi-agent research lab powered by pi-mono.
+See `lab/README.md` for full documentation.
+
+**Run agents**: `bun run lab/run-agent.ts <type> <id> [iterations]`
+**Check jobs**: `lab/jobs-for-ertem.md` (things agents need from Ertem)
+**Knowledge base**: `lab/kb/` (structured findings, dead-ends, open questions)
+
+---
+
 ## Next Steps
 
 - [x] Deep-dive into each breakthrough: read actual papers

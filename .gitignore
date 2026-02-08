@@ -13,3 +13,8 @@ dist/
 build/
 .venv/
 venv/
+.sessions/
+lab/node_modules/
+lab/bun.lock*
+lab/dist/
+lab/logs/
