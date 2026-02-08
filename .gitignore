@@ -1,13 +1,35 @@
-.context/
-__pycache__/
-*.pyc
-.env
-*.egg-info/
+# Dependencies
+node_modules/
+
+# Build output
 dist/
 build/
+.next/
+.turbo/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Bun
+bun.lock*
+
+# Python (seed tools)
+__pycache__/
+*.pyc
+*.egg-info/
 .venv/
 venv/
+
+# Pi-mono sessions
 .sessions/
-node_modules/
-bun.lock*
+
+# Logs
 logs/
+
+# IDE
+.context/
+
+# Convex
+.convex/

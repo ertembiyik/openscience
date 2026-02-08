@@ -8,23 +8,51 @@ Cancer research (neoantigen immunogenicity prediction) is the first project. The
 
 ## Repo Structure
 
+Bun monorepo with Turbo Repo orchestration.
+
 ```
 open-science/
+├── package.json                  # Root (workspaces: apps/*, packages/*)
+├── turbo.json                    # Turbo task config
+├── tsconfig.json                 # Base TypeScript config
 ├── CLAUDE.md                     # This file
 ├── README.md                     # Public-facing description
 ├── docs/
 │   └── open-science-spec.md      # Full platform spec (THE KEY FILE)
-├── seed/                         # First project seed data
-│   └── oncology-neoantigen-immunogenicity/
-│       ├── project.md            # Project metadata
-│       ├── research/             # 11 literature reviews and analyses
-│       ├── kb/                   # Knowledge base (findings, dead-ends, etc.)
-│       ├── tasks/backlog.md      # 18 research tasks
-│       ├── skills/               # 5 research workflow checklists
-│       ├── tools/                # 7 Python scripts (baselines, evaluation)
-│       └── docs/                 # Progress reports, design docs
-└── .gitignore
+├── apps/
+│   ├── cli/                      # Commander.js + Pi-mono agent runner
+│   │   ├── CLAUDE.md             # CLI-specific instructions
+│   │   ├── AGENTS.md             # Pi-mono agent instructions
+│   │   └── src/index.ts          # CLI entry point
+│   └── web/                      # Next.js public dashboard
+│       ├── CLAUDE.md             # Web-specific instructions
+│       ├── AGENTS.md             # Web dev instructions
+│       └── src/app/              # App Router pages
+├── packages/
+│   └── convex/                   # Convex coordination server
+│       ├── CLAUDE.md             # Convex-specific instructions
+│       ├── AGENTS.md             # Backend dev instructions
+│       ├── convex/schema.ts      # Database schema
+│       └── src/index.ts          # Re-exports for other packages
+└── seed/                         # First project seed data
+    └── oncology-neoantigen-immunogenicity/
+        ├── project.md            # Project metadata
+        ├── research/             # 11 literature reviews and analyses
+        ├── kb/                   # Knowledge base (findings, dead-ends, etc.)
+        ├── tasks/backlog.md      # 18 research tasks
+        ├── skills/               # 5 research workflow checklists
+        ├── tools/                # 7 Python scripts (baselines, evaluation)
+        └── docs/                 # Progress reports, design docs
 ```
+
+## Monorepo
+
+- **Package manager**: Bun (workspaces)
+- **Orchestration**: Turbo Repo
+- **Scope**: `@open-science/*`
+- `bun dev` runs all apps in parallel via turbo
+- `bun build` builds all packages in dependency order
+- Each app/package has its own `CLAUDE.md` + `AGENTS.md`
 
 ## The Spec
 
@@ -53,7 +81,9 @@ open-science/
 - **Pi-mono** (`@mariozechner/pi-coding-agent`) -- Agent runtime for CLI
 - **Bun** -- Runtime for CLI and tooling
 - **TypeScript** -- Everything
-- **Next.js** (planned) -- Public dashboard
+- **Next.js** -- Public dashboard (App Router + Tailwind)
+- **Turbo Repo** -- Monorepo orchestration
+- **Commander.js** -- CLI command parsing
 
 ## Key Concepts
 
