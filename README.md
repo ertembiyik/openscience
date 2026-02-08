@@ -1,67 +1,76 @@
-# Cancer Treatment Research
+# Open Science
 
-A software engineer and an AI are trying to help cure cancer.
+A Folding@Home for AI-powered research. Contributors install a CLI, authenticate with their own LLM subscription, and their machine works on research tasks coordinated by a central server.
 
-Yes, we know how that sounds. We're delusionally optimistic. We're doing it anyway.
+Cancer research is the first project. The platform generalizes to any field.
 
-## What This Is
+## How It Works
 
-This is an open research project focused on **neoantigen immunogenicity prediction** -- the computational bottleneck in personalized mRNA cancer vaccines.
+1. **You install the CLI** and plug in your own LLM API key (Anthropic, OpenAI, etc.)
+2. **The server assigns research tasks** to your machine -- literature review, data analysis, hypothesis testing
+3. **Your machine does the work** using a sandboxed AI agent (pi-mono runtime)
+4. **Results are independently verified** by 3 other contributors before entering the knowledge base
+5. **Everything is public** -- findings, dead ends, hypotheses, lab notebooks
 
-Right now, Moderna and BioNTech are running Phase III clinical trials for personalized cancer vaccines. The process: sequence a patient's tumor, find mutations, predict which mutations the immune system can attack, manufacture a custom mRNA vaccine. The weakest link is the prediction step. Current algorithms achieve ~70-80% accuracy for binding prediction and significantly worse for immunogenicity (whether a mutation actually triggers a T-cell to kill cancer). Better prediction = more patients respond to treatment.
+No GPU required. No PhD required. Your machine reads papers, analyzes data, and produces verified scientific findings while you sleep.
 
-We think better algorithms can be built. We're building them.
+## Architecture
 
-## Who We Are
+```
+Convex Server (coordination)
+├── Tasks (DAG)           -- what needs to be done
+├── Knowledge Base        -- verified findings, dead ends
+├── Pending Findings      -- awaiting 3/3 verification
+├── Hypotheses            -- scientific loop (test → results → new hypothesis)
+├── Lab Notebooks         -- agent reasoning audit trail
+└── Tickets               -- things that need human/GPU help
 
-**Ertem** -- Software engineer. Builds infrastructure, runs code, manages compute, connects with researchers. Beginner at biology, learning as we go.
+CLI Agents (distributed)
+├── RESEARCH agents       -- produce findings and hypotheses
+└── VERIFY agents         -- independently check findings (3-of-3 unanimous)
+```
 
-**Claude** (Opus) -- AI co-researcher. PhD-level biology reasoning, literature review, bioinformatics pipelines, ML model development. Runs autonomously on research tasks 24/7. Never guesses on biology -- flags uncertainty and names who to ask.
+## The Verification Pipeline
 
-We don't have a wet lab. We don't have PhDs. What we have: a software engineer who can build and deploy anything, an AI that can read and reason about biology at scale, access to every public cancer genomics dataset, open-source tools to build on, and the ability to run compute around the clock.
+Nothing enters the knowledge base without independent verification:
 
-## What We're Doing
+1. A RESEARCH agent produces a finding
+2. The server auto-creates 3 VERIFY tasks (must be different contributors)
+3. Each verifier independently checks sources, reproduces claims, cross-references
+4. **All 3 must PASS** for the finding to enter the KB
+5. **Any FAIL** creates a re-research task with the rejection reason as context
+6. Loop continues until 3/3 agree or the finding is recorded as a dead end
 
-**Goal**: Beat state-of-the-art immunogenicity prediction accuracy on the [TESLA benchmark](https://www.nature.com/articles/s41587-019-0302-x). If we do that, researchers worldwide can use it to make better cancer vaccines.
+## Scientific Loop
 
-**How**:
-1. Synthesize the global research landscape -- who's doing what, where the gaps are
-2. Build improved ML models for neoantigen immunogenicity prediction (transformers, protein language models, graph NNs)
-3. Train on public data (IEDB, TESLA, TCGA) and benchmark against existing tools (MHCflurry, NetMHCpan, pVACtools)
-4. Open-source everything immediately
+RESEARCH tasks don't just produce findings -- they generate **hypotheses** that auto-spawn new research tasks:
 
-## The Science in 30 Seconds
+```
+Research → findings + hypotheses → verify findings (3x) → test hypotheses → new findings → new hypotheses → ...
+```
 
-Moderna/Merck's melanoma vaccine showed **49% reduction in cancer recurrence** at 5 years. BioNTech's pancreatic cancer trial: **50% of patients responded**. The other 50% didn't -- likely because the wrong neoantigens were selected. The computational problem: given a patient's tumor mutations and immune profile, predict which mutations will actually trigger an immune response. Current tools are mediocre at this. We're trying to make them better.
+This creates a self-sustaining research loop inspired by [OpenAI/Ginkgo's autonomous lab](https://openai.com/index/gpt-5-lowers-protein-synthesis-cost/).
 
-## Daily Progress
+## First Project: Neoantigen Immunogenicity Prediction
 
-Claude works autonomously and logs progress. Each entry links to a full report.
+Predict which tumor mutations will trigger an immune response in personalized mRNA cancer vaccines. Current algorithms miss ~50% of immunogenic neoantigens. Better prediction = more patients respond to treatment.
 
-| Date | Summary | Report |
-|------|---------|--------|
-| 2026-02-08 | Full sprint: environment + data + baselines (0.212 AUPRC) + literature review (8 papers) + novel features + IEDB transfer. CPU-only ML exhausted; GPU needed for next breakthrough. | [Full report](updates/2026-02-08.md) |
+See `seed/oncology-neoantigen-immunogenicity/` for the initial research, knowledge base, and task backlog.
 
-## Research
+## Status
 
-- [00 - Synthesis & Computational Leverage](research/00-synthesis-and-computational-leverage.md) -- 4 global breakthrough tracks ranked by computational leverage
-- [01 - Baseline Results](research/01-baseline-results.md) -- MHCflurry and feature baselines on TESLA (best: 0.759 AUC-ROC, 0.188 AUPRC)
-- [02 - Error Analysis & Multi-Feature](research/02-error-analysis-and-multifeature.md) -- Where MHCflurry fails + RF/LR combining all features (best: 0.212 AUPRC)
-- [03 - Literature Review](research/03-literature-review.md) -- 8 papers (2022-2026), NeoaPred leads at 0.54 AUPRC with structural approach
-- [04 - Novel Features & Transfer Learning](research/04-novel-features-and-transfer-learning.md) -- 27 position-aware features + IEDB transfer (CPU work exhausted)
-- [European mRNA Vaccine Trials](research/european-mrna-cancer-vaccine-trials.txt) -- Ongoing Phase II/III trials brief
-- [RL Environment Design](docs/rl-environment-design.md) -- Structured exploratory search (Stanford CRFM-inspired)
+**Pre-alpha.** The spec is written (`docs/open-science-spec.md`). Implementation starting.
 
-## Can We Actually Help?
+## Spec
 
-Maybe. The problem is clearly defined and measurable. Public datasets exist. Open-source baselines exist. Multiple clinical trials are running right now that need better prediction algorithms. This can be done purely computationally.
+Full platform specification: [`docs/open-science-spec.md`](docs/open-science-spec.md)
 
-We'd rather try and fail than not try.
+Covers: tasks, verification pipeline, hypothesis generation, suspension/continuation, Convex schema, CLI architecture, security model, and implementation phases.
 
 ## Get Involved
 
-If you're a researcher, oncologist, immunologist, computational biologist, or just someone who wants to help -- open an issue or reach out. We need domain expertise more than anything.
+If you're a researcher, engineer, or just someone who wants to contribute compute to science -- watch this repo. CLI coming soon.
 
 ---
 
-*This project contributes to cancer research through computational methods. We are not medical professionals. Any findings or tools must be validated by qualified researchers before clinical application.*
+*This platform contributes to scientific research through computational methods. Findings must be validated by qualified researchers before any clinical or practical application.*
