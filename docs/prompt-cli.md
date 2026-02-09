@@ -10,7 +10,7 @@ You are implementing the CLI that contributors install to run AI research agents
 
 ## Source of Truth
 
-Read `docs/open-science-spec.md` FIRST. The "CLI Agent" section (~line 479) defines the runtime architecture, agent loop, sandboxing, and suspend tool. Follow it closely.
+Read `docs/openscience-spec.md` FIRST. The "CLI Agent" section (~line 479) defines the runtime architecture, agent loop, sandboxing, and suspend tool. Follow it closely.
 
 ## Architecture Overview
 
@@ -23,16 +23,16 @@ The CLI is a stateless generic agent runner. It:
 ## Step 1: Project Config & Auth
 
 Create `src/config.ts`:
-- Config dir: `~/.open-science/`
-- Auth file: `~/.open-science/auth.json` -- stores `{ provider, apiKey, convexUrl }`
-- Workspace dir: `~/.open-science/workspace/` -- sandboxed agent workspace
-- Sessions dir: `~/.open-science/sessions/` -- pi-mono session storage
+- Config dir: `~/.openscience/`
+- Auth file: `~/.openscience/auth.json` -- stores `{ provider, apiKey, convexUrl }`
+- Workspace dir: `~/.openscience/workspace/` -- sandboxed agent workspace
+- Sessions dir: `~/.openscience/sessions/` -- pi-mono session storage
 - Functions: `loadConfig()`, `saveConfig()`, `ensureDirs()`
 
 Create `src/auth.ts`:
 - Interactive auth wizard (the `auth` command): prompt for LLM provider (Anthropic/OpenAI/Google), API key, Convex deployment URL
 - Store in auth.json
-- `getAuth()` -- load or error with "run `open-science auth` first"
+- `getAuth()` -- load or error with "run `openscience auth` first"
 
 ## Step 2: Convex Client
 
@@ -125,11 +125,11 @@ Handle graceful shutdown on SIGINT/SIGTERM -- if an agent is running, let it fin
 
 Update `src/index.ts`:
 
-- `open-science auth` -- run auth wizard (interactive prompts for provider, key, convex URL)
-- `open-science run` -- start the agent loop. Options: `--role RESEARCH|VERIFY` (optional filter), `--once` (run one task then exit), `--project <slug>` (filter by project)
-- `open-science tasks list` -- query Convex for available tasks, display as table
-- `open-science tasks claim` -- claim one task and print its details (for debugging)
-- `open-science status` -- query Convex dashboard, show stats (active tasks, findings count, contributors, etc.)
+- `openscience auth` -- run auth wizard (interactive prompts for provider, key, convex URL)
+- `openscience run` -- start the agent loop. Options: `--role RESEARCH|VERIFY` (optional filter), `--once` (run one task then exit), `--project <slug>` (filter by project)
+- `openscience tasks list` -- query Convex for available tasks, display as table
+- `openscience tasks claim` -- claim one task and print its details (for debugging)
+- `openscience status` -- query Convex dashboard, show stats (active tasks, findings count, contributors, etc.)
 
 Use console.log for output. No fancy TUI needed for Phase 1.
 
@@ -157,9 +157,9 @@ VERIFY_SYSTEM_PROMPT: Tell the agent it's a verification agent. It should:
 
 - Use Bun APIs where available (Bun.file, Bun.write, etc.)
 - Use `console.log` / `console.error` for output
-- Errors should be user-friendly ("Run `open-science auth` first" not stack traces)
-- The agent workspace is sandboxed to ~/.open-science/workspace/
-- pi-mono sessions go in ~/.open-science/sessions/{taskId}/
+- Errors should be user-friendly ("Run `openscience auth` first" not stack traces)
+- The agent workspace is sandboxed to ~/.openscience/workspace/
+- pi-mono sessions go in ~/.openscience/sessions/{taskId}/
 
 ## Do NOT
 

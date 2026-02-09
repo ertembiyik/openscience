@@ -34,10 +34,10 @@ Uses the SDK mode of pi-mono:
 - Sessions stored as JSONL in `.sessions/`
 
 ## Commands
-- `open-science run --role RESEARCH|VERIFY` - Run agent
-- `open-science tasks list|claim` - Manage tasks
-- `open-science auth` - Configure API key
-- `open-science status` - Platform stats
+- `openscience run --role RESEARCH|VERIFY` - Run agent
+- `openscience tasks list|claim` - Manage tasks
+- `openscience auth` - Configure API key
+- `openscience status` - Platform stats
 
 ## Agent Roles
 

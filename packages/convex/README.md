@@ -1,4 +1,4 @@
-# @open-science/convex
+# @openscience/convex
 
 Convex backend for the Open Science distributed research platform.
 

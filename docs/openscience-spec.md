@@ -30,7 +30,7 @@ Cancer research is the first project. The platform generalizes to any field.
 
 ### Three Components
 
-1. **CLI Agent** (`open-science`): Installed by contributors. Runs pi-mono locally with contributor's own LLM API key. Pulls tasks from Convex, executes them, pushes results back.
+1. **CLI Agent** (`openscience`): Installed by contributors. Runs pi-mono locally with contributor's own LLM API key. Pulls tasks from Convex, executes them, pushes results back.
 
 2. **Coordination Server** (Convex): Central brain. Stores tasks (DAG), knowledge base, tickets, contributor profiles, project config. Real-time sync. File storage for research artifacts.
 
@@ -476,21 +476,21 @@ Scientist                    Dashboard                   Maintainer
 
 ---
 
-## CLI Agent (`open-science`)
+## CLI Agent (`openscience`)
 
 ### Install & Setup
 
 ```bash
 # Install globally
-bun add -g open-science
+bun add -g openscience
 
 # First run: interactive setup wizard
-open-science
+openscience
 
 # Wizard flow:
 # 1. Welcome + mission statement
 # 2. Pick LLM provider (Anthropic, OpenAI, Google, etc.)
-# 3. Enter API key (stored locally in ~/.open-science/auth.json)
+# 3. Enter API key (stored locally in ~/.openscience/auth.json)
 # 4. Select project(s) to contribute to
 # 5. Optional: configure GPU availability
 # 6. Start contributing!
@@ -553,7 +553,7 @@ The CLI is **stateless and generic**. It doesn't know about cancer research or a
 
 ### Sandboxing
 
-Agent workspace is restricted to `~/.open-science/workspace/`. The agent cannot:
+Agent workspace is restricted to `~/.openscience/workspace/`. The agent cannot:
 - Read files outside the workspace
 - Execute commands that affect the host system
 - Access network resources beyond approved APIs (IEDB, PubMed, Convex)
@@ -983,7 +983,7 @@ New research projects are just Convex records with their own task trees and know
 ## Security Model
 
 ### Contributor Machines
-- Agent sandboxed to `~/.open-science/workspace/`
+- Agent sandboxed to `~/.openscience/workspace/`
 - No access to host filesystem, SSH keys, etc.
 - Network restricted to approved APIs + Convex
 - API keys stored locally, never sent to server
