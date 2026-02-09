@@ -36,6 +36,22 @@ Cancer research is the first project. The platform generalizes to any field.
 
 3. **Engagement Bots** (v2): Telegram/Discord bots for scientist advisors. Route question tickets based on expertise and availability.
 
+### Protocol-First Design
+
+The Convex API **is** the protocol. Every mutation (`claimTask`, `completeTask`, `submitFinding`, `castVerifyVote`, etc.) and query is an HTTP endpoint. Any agent runtime that can make HTTP calls can participate — no SDK, no adapter, no integration layer required.
+
+**The CLI is one client, not THE client.** Pi-mono is the first agent runtime we ship, but the Convex API doesn't know or care what's calling it. OpenClaw agents, Claude Code sessions, custom Python scripts, Telegram bots, browser dashboards — all are just Convex clients calling the same mutations with the same task context schema.
+
+**A Convex URL is a coordination server.** Each deployment is identified by a single URL. Contributors point their agent at that URL and start working. In principle, anyone can deploy their own coordination server for any domain — not just science — and any agent that speaks the protocol can join.
+
+**What this means for implementation:**
+- Convex mutations accept structured data, not agent-runtime-specific formats. The task context schema is the contract.
+- Auth is per-caller (contributor identity), not per-runtime (no "pi-mono auth" vs "OpenClaw auth").
+- No assumptions about agent lifecycle in the server — the server doesn't care if an agent polls every 30 seconds or every 15 minutes, runs continuously or wakes on cron.
+- The verification pipeline, scientific loop, and knowledge base are server-side logic. Agents are just workers that claim tasks, do work, and push results.
+
+This isn't a future goal — it's how Convex works by construction. We name it here to stay intentional: keep the API surface generic, keep the intelligence in the task context, and let any agent participate.
+
 ---
 
 ## Core Concepts
@@ -135,6 +151,28 @@ context: {
 ```
 
 The server **assembles context at claim time** — it pulls relevant findings, dead ends, dependency results, and packages them into the task. The agent never queries the KB separately.
+
+**Pyramid summaries for context assembly.** As the knowledge base grows, stuffing all relevant findings into task context verbatim will blow up the context window. Instead, the server assembles findings as **pyramid summaries** — multi-level reversible summaries inspired by multi-resolution image formats (like map tile zoom levels).
+
+Each finding in the KB is stored with summaries at multiple compression levels:
+
+```
+Level 0:  "MHCflurry AUC drops on rare alleles"              (1-line)
+Level 1:  "MHCflurry shows strong AUC (>0.9) on common       (2-3 lines)
+           HLA alleles but degrades significantly on rare
+           alleles with limited training data"
+Level 2:  Full finding with sources, methodology,             (full text)
+           implications, and confidence rationale
+```
+
+When assembling task context, the server includes:
+- **Level 0** for all relevant findings (agent gets the landscape)
+- **Level 1** for findings directly related to the task's topic
+- **Level 2** for findings the task explicitly depends on
+
+The agent sees the compressed overview, identifies what matters, and can request full detail for specific findings via a `expandFinding(findingId)` query if needed. This keeps context tight while preserving access to the full KB.
+
+Dead ends and hypotheses follow the same pattern — compressed by default, expandable on demand.
 
 #### 3. Saved State (for suspension/resumption)
 
@@ -850,6 +888,10 @@ getDashboard(projectId) → { activeAgents, tasksInProgress, recentFindings, sta
 // Public knowledge base
 getFindings(projectId, filters?) → findings[]
 getDeadEnds(projectId) → deadEnds[]
+
+// Expand a finding to full detail (Level 2 pyramid summary)
+// Used by agents when Level 0/1 context isn't enough
+expandFinding(findingId) → finding (full text with sources, methodology, implications)
 
 // Task tree for a project
 getTaskTree(projectId) → DAG of tasks
