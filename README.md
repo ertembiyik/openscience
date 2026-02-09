@@ -59,11 +59,11 @@ See `seed/oncology-neoantigen-immunogenicity/` for the initial research, knowled
 
 ## Status
 
-**Pre-alpha.** The spec is written (`docs/open-science-spec.md`). Implementation starting.
+**Pre-alpha.** The spec is written (`docs/openscience-spec.md`). Implementation starting.
 
 ## Spec
 
-Full platform specification: [`docs/open-science-spec.md`](docs/open-science-spec.md)
+Full platform specification: [`docs/openscience-spec.md`](docs/openscience-spec.md)
 
 Covers: tasks, verification pipeline, hypothesis generation, suspension/continuation, Convex schema, CLI architecture, security model, and implementation phases.
 

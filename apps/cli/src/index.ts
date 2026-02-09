@@ -4,7 +4,7 @@ import { Command } from "commander";
 const program = new Command();
 
 program
-  .name("open-science")
+  .name("openscience")
   .description("Distributed AI research platform CLI")
   .version("0.0.1");
 

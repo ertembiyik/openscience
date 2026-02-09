@@ -11,13 +11,13 @@ You are implementing the public dashboard for Open Science, a distributed AI res
 
 ## Source of Truth
 
-Read `docs/open-science-spec.md` FIRST. The "Public Dashboard" section (~line 878) lists what the dashboard shows. For Phase 1, we're building the scaffold with mock data -- Convex integration comes when the backend agent finishes.
+Read `docs/openscience-spec.md` FIRST. The "Public Dashboard" section (~line 878) lists what the dashboard shows. For Phase 1, we're building the scaffold with mock data -- Convex integration comes when the backend agent finishes.
 
 ## Step 1: Install Convex Client
 
 Add convex dependency and the shared package:
 ```bash
-cd apps/web && bun add convex @open-science/convex
+cd apps/web && bun add convex @openscience/convex
 ```
 
 Create `src/lib/convex.ts`:

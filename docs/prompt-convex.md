@@ -11,7 +11,7 @@ You are implementing the Convex coordination server for Open Science, a distribu
 
 ## Source of Truth
 
-Read `docs/open-science-spec.md` FIRST. The "Convex Schema" section (starting ~line 600) defines every table, field, and index. The "Key Mutations" and "Key Queries" sections define the exact API surface. DO NOT deviate from the spec.
+Read `docs/openscience-spec.md` FIRST. The "Convex Schema" section (starting ~line 600) defines every table, field, and index. The "Key Mutations" and "Key Queries" sections define the exact API surface. DO NOT deviate from the spec.
 
 ## Step 1: Rewrite Schema
 
