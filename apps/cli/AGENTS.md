@@ -1,68 +1,62 @@
 # CLI - Open Science Agent Runner
 
 ## What This Is
-The CLI that contributors install to participate in the Open Science research platform. It connects to the Convex coordination server, claims research tasks, and runs AI agents using pi-mono.
+The CLI that contributors install to participate in the Open Science research platform. It connects to the Convex coordination server, claims research tasks, runs an LLM in a tool-use loop, and pushes results back.
+
+## Architecture
+
+The agent is abstract. The CLI is just a loop:
+1. Authenticate contributor (stores LLM API key locally)
+2. Connect to Convex server
+3. Claim a task (RESEARCH or VERIFY role)
+4. Assemble system prompt + tools + task context
+5. Run a generic tool-use loop (LLM calls tools, tools call Convex)
+6. Push result back to Convex
+
+**No framework dependency.** The LLM provider is pluggable (Anthropic, OpenAI, Google) via raw HTTP APIs. Tools are plain objects with JSON Schema parameters and execute functions. The Convex API is the protocol — any agent that can make HTTP calls can participate.
 
 ## Tech Stack
 - **Commander.js** for CLI command parsing
-- **Pi-mono** (`@mariozechner/pi-coding-agent`) for AI agent runtime
 - **Convex** client for server communication
 - **Bun** as the runtime
-
-## Architecture
-The CLI:
-1. Authenticates contributor (stores LLM API key locally)
-2. Connects to Convex server
-3. Claims a task (RESEARCH or VERIFY role)
-4. Assembles task context (from server)
-5. Creates a pi-mono agent session with custom extensions
-6. Runs the agent loop (iterations of prompt → work → commit)
-7. Submits results back to Convex
+- **Raw fetch** for LLM provider APIs (no SDK dependencies)
 
 ## Key Files
 - `src/index.ts` - CLI entry point (Commander.js commands)
-- `src/agent.ts` - Pi-mono agent session setup (TODO)
-- `src/extensions/` - Custom pi-mono tools (TODO)
-  - `convex-sync.ts` - Submit findings, update tasks
-  - `bioinformatics.ts` - IEDB, PubMed tools
-
-## Pi-mono Integration
-Uses the SDK mode of pi-mono:
-- `createAgentSession()` with custom extensions
-- `SessionManager.continueRecent()` for persistent sessions
-- Custom tools registered via `DefaultResourceLoader.extensionFactories`
-- Sessions stored as JSONL in `.sessions/`
+- `src/agent.ts` - Generic tool-use loop (provider-agnostic)
+- `src/providers.ts` - LLM provider abstraction (Anthropic, OpenAI, Google)
+- `src/tools.ts` - Tool interface definition
+- `src/extensions/convex-tools.ts` - Convex mutation tools (submit_finding, cast_vote, etc.)
+- `src/extensions/lab-tools.ts` - Lab notebook tool
+- `src/convex.ts` - Typed Convex HTTP client wrapper
+- `src/config.ts` - Config management (~/.openscience/)
+- `src/auth.ts` - Interactive auth wizard
+- `src/loop.ts` - Main claim-run-complete loop
+- `src/prompts.ts` - RESEARCH and VERIFY system prompts
 
 ## Commands
-- `openscience run --role RESEARCH|VERIFY` - Run agent
-- `openscience tasks list|claim` - Manage tasks
-- `openscience auth` - Configure API key
+- `openscience auth` - Configure API key and Convex URL
+- `openscience run --role RESEARCH|VERIFY --once --project <slug>` - Run agent loop
+- `openscience tasks list|claim` - Browse and claim tasks
 - `openscience status` - Platform stats
 
 ## Agent Roles
 
 ### RESEARCH Role
 - Investigate the assigned research question
-- Use available tools (literature search, data analysis, bioinformatics)
 - Record findings with confidence levels and sources
 - Generate hypotheses for future research
 - Write structured lab notebook entries
 
 ### VERIFY Role
 - Independently verify findings from a RESEARCH agent
-- Check sources, reproduce claims, cross-reference with known data
+- Check sources, reproduce claims, cross-reference
 - Provide PASS/FAIL verdict with detailed reasoning
-- Do NOT look at the original agent's methodology -- verify independently
-
-## Agent Tools
-- Standard file tools (read, write, edit, bash)
-- `submit_finding` - Submit verified finding to knowledge base
-- `record_dead_end` - Record what didn't work and why
-- `update_task` - Update task status and progress
-- `create_ticket` - Request human help or GPU access
+- Do NOT replicate the original agent's approach
 
 ## Working Principles
-1. Every claim needs a confidence level (HIGH/MEDIUM/LOW) and source
-2. Check dead-ends before starting -- don't repeat failed approaches
-3. Record your reasoning in structured lab notebook format
-4. When stuck, create a ticket instead of guessing
+1. The agent is abstract — any LLM in a tool-use loop
+2. Convex API is the protocol — tools are just Convex mutation/query wrappers
+3. No framework dependency — raw HTTP to LLM providers
+4. Task context is self-contained — assembled by server at claim time
+5. Pyramid summaries keep context tight — agents expand findings on demand

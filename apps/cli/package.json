@@ -13,9 +13,6 @@
   },
   "dependencies": {
     "commander": "^13.0.0",
-    "@mariozechner/pi-coding-agent": "^0.52.8",
-    "@mariozechner/pi-ai": "^0.52.8",
-    "@sinclair/typebox": "^0.34.0",
     "convex": "^1.21.0"
   },
   "devDependencies": {
