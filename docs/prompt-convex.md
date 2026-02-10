@@ -1,6 +1,6 @@
-# Task: Implement Open Science Convex Backend (Phase 1)
+# Task: Implement Open Lab Convex Backend (Phase 1)
 
-You are implementing the Convex coordination server for Open Science, a distributed AI research platform. Work ONLY in `packages/convex/`.
+You are implementing the Convex coordination server for Open Lab, a distributed AI research platform. Work ONLY in `packages/convex/`.
 
 ## What Exists
 
@@ -11,7 +11,7 @@ You are implementing the Convex coordination server for Open Science, a distribu
 
 ## Source of Truth
 
-Read `docs/openscience-spec.md` FIRST. The "Convex Schema" section (starting ~line 600) defines every table, field, and index. The "Key Mutations" and "Key Queries" sections define the exact API surface. DO NOT deviate from the spec.
+Read `docs/openlab-spec.md` FIRST. The "Convex Schema" section (starting ~line 600) defines every table, field, and index. The "Key Mutations" and "Key Queries" sections define the exact API surface. DO NOT deviate from the spec.
 
 ## Step 1: Rewrite Schema
 

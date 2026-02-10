@@ -1,4 +1,4 @@
-# Open Science Platform
+# Open Lab Platform
 
 ## What This Is
 
@@ -11,14 +11,14 @@ Cancer research (neoantigen immunogenicity prediction) is the first project. The
 Bun monorepo with Turbo Repo orchestration.
 
 ```
-openscience/
+openlab/
 ├── package.json                  # Root (workspaces: apps/*, packages/*)
 ├── turbo.json                    # Turbo task config
 ├── tsconfig.json                 # Base TypeScript config
 ├── CLAUDE.md                     # This file
 ├── README.md                     # Public-facing description
 ├── docs/
-│   └── openscience-spec.md      # Full platform spec (THE KEY FILE)
+│   └── openlab-spec.md      # Full platform spec (THE KEY FILE)
 ├── apps/
 │   ├── cli/                      # Commander.js + Pi-mono agent runner
 │   │   ├── CLAUDE.md             # CLI-specific instructions
@@ -49,14 +49,14 @@ openscience/
 
 - **Package manager**: Bun (workspaces)
 - **Orchestration**: Turbo Repo
-- **Scope**: `@openscience/*`
+- **Scope**: `@openlab/*`
 - `bun dev` runs all apps in parallel via turbo
 - `bun build` builds all packages in dependency order
 - Each app/package has its own `CLAUDE.md` + `AGENTS.md`
 
 ## The Spec
 
-**`docs/openscience-spec.md` is the source of truth.** Read it before making any implementation decisions. It covers:
+**`docs/openlab-spec.md` is the source of truth.** Read it before making any implementation decisions. It covers:
 
 - Architecture (Convex server + CLI agents + engagement bots)
 - Self-contained tasks (role + context + saved state)

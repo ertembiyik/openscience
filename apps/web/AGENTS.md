@@ -1,7 +1,7 @@
-# Web - Open Science Public Dashboard
+# Web - Open Lab Public Dashboard
 
 ## What This Is
-The public-facing dashboard for the Open Science platform. Shows real-time research progress, knowledge base, task status, and contributor activity.
+The public-facing dashboard for the Open Lab platform. Shows real-time research progress, knowledge base, task status, and contributor activity.
 
 ## Tech Stack
 - **Next.js** (App Router) with TypeScript

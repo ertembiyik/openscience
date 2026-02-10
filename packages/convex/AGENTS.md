@@ -1,7 +1,7 @@
-# Convex - Open Science Coordination Server
+# Convex - Open Lab Coordination Server
 
 ## What This Is
-The Convex backend that coordinates the entire Open Science platform. Manages tasks, knowledge base, verification pipeline, hypotheses, and lab notebooks in real-time.
+The Convex backend that coordinates the entire Open Lab platform. Manages tasks, knowledge base, verification pipeline, hypotheses, and lab notebooks in real-time.
 
 ## Tech Stack
 - **Convex** for real-time backend (queries, mutations, file storage)

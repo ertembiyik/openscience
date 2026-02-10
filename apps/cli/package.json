@@ -1,10 +1,10 @@
 {
-  "name": "@openscience/cli",
+  "name": "@openlab/cli",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "bin": {
-    "openscience": "./dist/index.js"
+    "openlab": "./dist/index.js"
   },
   "scripts": {
     "dev": "bun run --watch src/index.ts",

@@ -1,4 +1,4 @@
-# Open Science
+# Open Lab
 
 A Folding@Home for AI-powered research. Contributors install a CLI, authenticate with their own LLM subscription, and their machine works on research tasks coordinated by a central server.
 
@@ -59,11 +59,11 @@ See `seed/oncology-neoantigen-immunogenicity/` for the initial research, knowled
 
 ## Status
 
-**Pre-alpha.** The spec is written (`docs/openscience-spec.md`). Implementation starting.
+**Pre-alpha.** The spec is written (`docs/openlab-spec.md`). Implementation starting.
 
 ## Spec
 
-Full platform specification: [`docs/openscience-spec.md`](docs/openscience-spec.md)
+Full platform specification: [`docs/openlab-spec.md`](docs/openlab-spec.md)
 
 Covers: tasks, verification pipeline, hypothesis generation, suspension/continuation, Convex schema, CLI architecture, security model, and implementation phases.
 

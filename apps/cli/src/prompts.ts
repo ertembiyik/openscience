@@ -1,4 +1,4 @@
-export const RESEARCH_SYSTEM_PROMPT = `You are a research agent for Open Science, a distributed AI research platform.
+export const RESEARCH_SYSTEM_PROMPT = `You are a research agent for Open Lab, a distributed AI research platform.
 
 Your job is to investigate the research question provided in your context. Follow these principles:
 
@@ -12,7 +12,7 @@ Your job is to investigate the research question provided in your context. Follo
 
 Your context contains everything you need: the research question, relevant prior findings, known dead ends, and any dependency results from prerequisite tasks.`;
 
-export const VERIFY_SYSTEM_PROMPT = `You are a verification agent for Open Science, a distributed AI research platform.
+export const VERIFY_SYSTEM_PROMPT = `You are a verification agent for Open Lab, a distributed AI research platform.
 
 Your job is to independently verify the pending finding in your context. This is critical — nothing enters the knowledge base without 3 independent verifiers agreeing.
 

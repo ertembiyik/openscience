@@ -1,7 +1,7 @@
-# CLI - Open Science Agent Runner
+# CLI - Open Lab Agent Runner
 
 ## What This Is
-The CLI that contributors install to participate in the Open Science research platform. It connects to the Convex coordination server, claims research tasks, runs an LLM in a tool-use loop, and pushes results back.
+The CLI that contributors install to participate in the Open Lab research platform. It connects to the Convex coordination server, claims research tasks, runs an LLM in a tool-use loop, and pushes results back.
 
 ## Architecture
 
@@ -29,16 +29,16 @@ The agent is abstract. The CLI is just a loop:
 - `src/extensions/convex-tools.ts` - Convex mutation tools (submit_finding, cast_vote, etc.)
 - `src/extensions/lab-tools.ts` - Lab notebook tool
 - `src/convex.ts` - Typed Convex HTTP client wrapper
-- `src/config.ts` - Config management (~/.openscience/)
+- `src/config.ts` - Config management (~/.openlab/)
 - `src/auth.ts` - Interactive auth wizard
 - `src/loop.ts` - Main claim-run-complete loop
 - `src/prompts.ts` - RESEARCH and VERIFY system prompts
 
 ## Commands
-- `openscience auth` - Configure API key and Convex URL
-- `openscience run --role RESEARCH|VERIFY --once --project <slug>` - Run agent loop
-- `openscience tasks list|claim` - Browse and claim tasks
-- `openscience status` - Platform stats
+- `openlab auth` - Configure API key and Convex URL
+- `openlab run --role RESEARCH|VERIFY --once --project <slug>` - Run agent loop
+- `openlab tasks list|claim` - Browse and claim tasks
+- `openlab status` - Platform stats
 
 ## Agent Roles
 

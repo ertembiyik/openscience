@@ -1,6 +1,6 @@
-# @openscience/convex
+# @openlab/convex
 
-Convex backend for the Open Science distributed research platform.
+Convex backend for the Open Lab distributed research platform.
 
 ## What This Is
 

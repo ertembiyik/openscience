@@ -1,6 +1,6 @@
 import { ConvexHttpClient } from "convex/browser";
 
-export class OpenScienceClient {
+export class OpenLabClient {
   private client: ConvexHttpClient;
 
   constructor(url: string) {
