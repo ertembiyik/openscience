@@ -1,7 +1,9 @@
 import { OpenLabClient } from "./convex";
-import { createProvider } from "./providers";
-import { runTask } from "./agent";
+import { assembleWorkspace, resolveSeedDir } from "./workspace/assemble";
+import { runAgent } from "./workspace/run-agent";
+import { collectResults } from "./workspace/collect";
 import type { Config } from "./config";
+import { saveConfig } from "./config";
 
 interface LoopOptions {
   role?: string;
@@ -11,16 +13,16 @@ interface LoopOptions {
 
 export async function startAgentLoop(config: Config, options: LoopOptions) {
   if (!config.convexUrl) {
-    console.error("No Convex URL configured. Run `openlab auth` first.");
+    console.error("No Convex URL configured. Run `openlab onboard` first.");
     process.exit(1);
   }
-  if (!config.apiKey) {
-    console.error("No API key configured. Run `openlab auth` first.");
+  if (!config.agentRuntime) {
+    console.error("No agent runtime configured. Run `openlab onboard` first.");
     process.exit(1);
   }
 
   const client = new OpenLabClient(config.convexUrl);
-  const provider = createProvider(config.provider, config.apiKey);
+
   let running = true;
 
   // Register contributor if not already registered
@@ -28,9 +30,10 @@ export async function startAgentLoop(config: Config, options: LoopOptions) {
     console.log("Registering contributor...");
     const id = await client.registerContributor(
       `contributor-${Date.now()}`,
-      config.provider,
+      config.agentRuntime,
     );
     config.contributorId = id;
+    await saveConfig(config);
     console.log(`Registered as: ${id}`);
   }
 
@@ -42,7 +45,7 @@ export async function startAgentLoop(config: Config, options: LoopOptions) {
     running = false;
   });
 
-  console.log(`Agent loop started (${config.provider}). Waiting for tasks...\n`);
+  console.log(`Agent loop started (${config.agentRuntime}). Waiting for tasks...\n`);
 
   while (running) {
     try {
@@ -63,8 +66,38 @@ export async function startAgentLoop(config: Config, options: LoopOptions) {
       console.log(`  Priority: P${task.priority}`);
 
       try {
-        const result = await runTask(task, client, provider);
-        await client.completeTask(task._id, result);
+        // Resolve the seed directory for this project
+        const projectSlug =
+          task.context?.projectSlug ??
+          "oncology-neoantigen-immunogenicity";
+        const seedDir = resolveSeedDir(projectSlug);
+
+        if (!seedDir) {
+          throw new Error(
+            `Seed directory not found for project: ${projectSlug}`,
+          );
+        }
+
+        // 1. Assemble workspace
+        console.log("  Assembling workspace...");
+        const workspaceDir = await assembleWorkspace({
+          taskId: task._id,
+          taskType: task.type,
+          contextMarkdown:
+            task.contextMarkdown ?? "# TASK.md\n\nNo context available.",
+          seedDir,
+          projectSlug,
+        });
+        console.log(`  Workspace: ${workspaceDir}`);
+
+        // 2. Run agent via SDK
+        console.log(`  Running agent (${config.agentRuntime})...`);
+        const { output } = await runAgent(config.agentRuntime, workspaceDir);
+        console.log("  Agent finished.");
+
+        // 3. Collect results
+        console.log("  Collecting results...");
+        await collectResults(workspaceDir, task._id, output, client);
         console.log(`Task completed: ${title}\n`);
       } catch (error: any) {
         console.error(`Task failed: ${error.message}`);

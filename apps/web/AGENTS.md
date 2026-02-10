@@ -1,5 +1,7 @@
 # Web - Open Lab Public Dashboard
 
+> **Monorepo setup**: Read `docs/monorepo.md` before modifying dependencies, scripts, or workspace structure.
+
 ## What This Is
 The public-facing dashboard for the Open Lab platform. Shows real-time research progress, knowledge base, task status, and contributor activity.
 
