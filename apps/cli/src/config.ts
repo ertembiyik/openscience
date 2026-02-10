@@ -2,12 +2,13 @@ import { homedir } from "os";
 import { join } from "path";
 import { existsSync, mkdirSync } from "fs";
 
-export type AgentRuntime = "codex" | "claude-code" | "pi-mono" | "openclaw";
+export type AgentRuntime = "codex" | "claude-code" | "pi-mono";
 
 export interface Config {
   agentRuntime: AgentRuntime;
   convexUrl: string;
   concurrency: number;
+  projectAllocation?: Record<string, number>;
   contributorId?: string;
   // Legacy fields (kept for backward compat, ignored in new flow)
   provider?: string;

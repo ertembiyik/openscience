@@ -27,6 +27,7 @@ export default defineSchema({
     dependsOn: v.any(), // Id<"tasks">[]
     assignedTo: v.optional(v.id("users")),
     context: v.any(), // TaskContext object — assembled at claim time
+    contextMarkdown: v.optional(v.string()), // Full TASK.md content — frozen at claim time
     savedState: v.optional(v.any()), // { sessionSnapshot, suspendedOnTicket, suspendedAt }
     result: v.optional(v.string()),
     estimatedTokens: v.optional(v.number()),

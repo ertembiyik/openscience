@@ -21,11 +21,6 @@ const RUNTIMES: Omit<RuntimeInfo, "detected">[] = [
     binary: "pi-mono",
     description: "Pi-mono agent runtime",
   },
-  {
-    name: "openclaw",
-    binary: "openclaw",
-    description: "OpenClaw agent",
-  },
 ];
 
 export async function detectRuntimes(): Promise<RuntimeInfo[]> {

@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { generateTaskMarkdown } from "./lib/task-markdown";
 
 export const createTask = mutation({
   args: {
@@ -165,11 +166,21 @@ export const claimTask = mutation({
         projectDescription: project?.description ?? "",
       };
 
+      // Generate contextMarkdown (TASK.md content) — frozen at claim time
+      const contextMarkdown = generateTaskMarkdown({
+        _id: task._id as string,
+        type: task.type,
+        priority: task.priority,
+        context: assembledContext,
+        parentId: task.parentId as string | undefined,
+      });
+
       // Claim the task
       await ctx.db.patch(task._id, {
         status: "ASSIGNED",
         assignedTo: args.contributorId,
         context: assembledContext,
+        contextMarkdown,
       });
 
       return await ctx.db.get(task._id);

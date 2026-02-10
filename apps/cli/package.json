@@ -12,7 +12,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "latest",
     "@clack/prompts": "^1.0.0",
+    "@mariozechner/pi-ai": "latest",
+    "@mariozechner/pi-coding-agent": "latest",
+    "@openai/codex-sdk": "latest",
     "commander": "^13.0.0",
     "convex": "^1.21.0"
   },
