@@ -1,5 +1,7 @@
 # CLI - Open Lab Agent Runner
 
+> **Monorepo setup**: Read `docs/monorepo.md` before modifying dependencies, scripts, or workspace structure.
+
 ## What This Is
 The CLI that contributors install to participate in the Open Lab research platform. It connects to the Convex coordination server, claims research tasks, runs an LLM in a tool-use loop, and pushes results back.
 

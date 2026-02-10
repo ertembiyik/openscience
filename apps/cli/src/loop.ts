@@ -11,16 +11,22 @@ interface LoopOptions {
 
 export async function startAgentLoop(config: Config, options: LoopOptions) {
   if (!config.convexUrl) {
-    console.error("No Convex URL configured. Run `openlab auth` first.");
+    console.error("No Convex URL configured. Run `openlab onboard` first.");
     process.exit(1);
   }
-  if (!config.apiKey) {
-    console.error("No API key configured. Run `openlab auth` first.");
+  if (!config.agentRuntime) {
+    console.error("No agent runtime configured. Run `openlab onboard` first.");
     process.exit(1);
   }
 
   const client = new OpenLabClient(config.convexUrl);
-  const provider = createProvider(config.provider, config.apiKey);
+
+  // Legacy path: if apiKey is present, use built-in provider loop
+  // New path: will delegate to agent runtime (codex, claude, etc.)
+  const provider = config.apiKey
+    ? createProvider(config.provider ?? "anthropic", config.apiKey)
+    : null;
+
   let running = true;
 
   // Register contributor if not already registered
@@ -28,7 +34,7 @@ export async function startAgentLoop(config: Config, options: LoopOptions) {
     console.log("Registering contributor...");
     const id = await client.registerContributor(
       `contributor-${Date.now()}`,
-      config.provider,
+      config.agentRuntime,
     );
     config.contributorId = id;
     console.log(`Registered as: ${id}`);
@@ -42,7 +48,7 @@ export async function startAgentLoop(config: Config, options: LoopOptions) {
     running = false;
   });
 
-  console.log(`Agent loop started (${config.provider}). Waiting for tasks...\n`);
+  console.log(`Agent loop started (${config.agentRuntime}). Waiting for tasks...\n`);
 
   while (running) {
     try {
@@ -63,6 +69,13 @@ export async function startAgentLoop(config: Config, options: LoopOptions) {
       console.log(`  Priority: P${task.priority}`);
 
       try {
+        if (!provider) {
+          // TODO: delegate to external agent runtime (codex, claude, pi-mono, openclaw)
+          throw new Error(
+            `External agent runtime '${config.agentRuntime}' delegation not yet implemented. ` +
+            `Provide an API key via legacy config to use the built-in provider loop.`,
+          );
+        }
         const result = await runTask(task, client, provider);
         await client.completeTask(task._id, result);
         console.log(`Task completed: ${title}\n`);

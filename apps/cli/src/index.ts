@@ -1,9 +1,10 @@
 #!/usr/bin/env bun
 import { Command } from "commander";
-import { runAuthWizard } from "./auth";
-import { getConfig } from "./config";
+import { getConfig, loadConfig } from "./config";
 import { OpenLabClient } from "./convex";
 import { startAgentLoop } from "./loop";
+import { runOnboardWizard } from "./onboard";
+import { createDaemonService } from "./daemon/service";
 
 const program = new Command();
 
@@ -12,12 +13,20 @@ program
   .description("Distributed AI research platform CLI")
   .version("0.0.1");
 
-// auth command
+// onboard command
 program
-  .command("auth")
-  .description("Configure API key and Convex URL")
+  .command("onboard")
+  .description("Interactive setup wizard — configure runtime, server, and daemon")
+  .option("--interactive", "Run in interactive mode (default)")
   .action(async () => {
-    await runAuthWizard();
+    await runOnboardWizard();
+  });
+
+// auth (hidden alias for onboard — backward compat)
+program
+  .command("auth", { hidden: true })
+  .action(async () => {
+    await runOnboardWizard();
   });
 
 // run command
@@ -34,6 +43,64 @@ program
       once: opts.once,
       project: opts.project,
     });
+  });
+
+// daemon command group
+const daemon = program.command("daemon").description("Manage the background agent daemon");
+
+daemon
+  .command("install")
+  .description("Install and start the daemon (runs on boot)")
+  .action(async () => {
+    const config = await loadConfig();
+    if (!config) {
+      console.error("Not configured. Run `openlab onboard` first.");
+      process.exit(1);
+    }
+    const service = await createDaemonService();
+    await service.install();
+  });
+
+daemon
+  .command("uninstall")
+  .description("Stop and remove the daemon")
+  .action(async () => {
+    const service = await createDaemonService();
+    await service.uninstall();
+  });
+
+daemon
+  .command("start")
+  .description("Start the daemon")
+  .action(async () => {
+    const service = await createDaemonService();
+    await service.start();
+  });
+
+daemon
+  .command("stop")
+  .description("Stop the daemon")
+  .action(async () => {
+    const service = await createDaemonService();
+    await service.stop();
+  });
+
+daemon
+  .command("status")
+  .description("Show daemon status")
+  .action(async () => {
+    const service = await createDaemonService();
+    const s = await service.status();
+
+    if (!s.installed) {
+      console.log("\nDaemon: not installed");
+      console.log("  Run `openlab daemon install` to set up.\n");
+      return;
+    }
+
+    console.log(`\nDaemon: ${s.running ? "\x1b[32mrunning\x1b[0m" : "\x1b[33mstopped\x1b[0m"}`);
+    if (s.pid) console.log(`  PID: ${s.pid}`);
+    console.log();
   });
 
 // tasks command
@@ -83,7 +150,7 @@ tasks
       console.log("Registering contributor...");
       config.contributorId = await client.registerContributor(
         `contributor-${Date.now()}`,
-        config.provider,
+        config.agentRuntime,
       );
     }
 
@@ -121,5 +188,15 @@ program
     console.log(`  Hypotheses proven:  ${stats.hypothesesSupported}`);
     console.log();
   });
+
+// Default: no subcommand → onboard if not configured, status if configured
+program.action(async () => {
+  const config = await loadConfig();
+  if (!config) {
+    await runOnboardWizard();
+  } else {
+    program.commands.find((c) => c.name() === "status")?.parse(["status"], { from: "user" });
+  }
+});
 
 program.parse();

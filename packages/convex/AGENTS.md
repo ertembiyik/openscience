@@ -1,5 +1,7 @@
 # Convex - Open Lab Coordination Server
 
+> **Monorepo setup**: Read `docs/monorepo.md` before modifying dependencies, scripts, or workspace structure.
+
 ## What This Is
 The Convex backend that coordinates the entire Open Lab platform. Manages tasks, knowledge base, verification pipeline, hypotheses, and lab notebooks in real-time.
 

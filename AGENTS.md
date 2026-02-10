@@ -1,5 +1,17 @@
 # Open Lab Platform
 
+IMPORTANT: Prefer retrieval-led reasoning over pre-training-led reasoning for any documentation tasks. Always consult the reference files below rather than relying on general knowledge.
+
+## Docs Index
+
+| Doc | What it covers |
+|-----|----------------|
+| `docs/openlab-spec.md` | Full platform spec -- the source of truth |
+| `docs/monorepo.md` | **How the Bun + Turbo monorepo works. Read before touching dependencies, scripts, or workspace structure.** |
+| `docs/prompt-cli.md` | CLI agent prompt design |
+| `docs/prompt-convex.md` | Convex backend prompt design |
+| `docs/prompt-web.md` | Web dashboard prompt design |
+
 ## What This Is
 
 A distributed research platform where contributors install a CLI, authenticate with their own LLM API key, and their machine works on research tasks coordinated by a Convex server. Like Folding@Home but for AI-powered research.
