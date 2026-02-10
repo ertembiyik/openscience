@@ -9,7 +9,7 @@ export interface Config {
   contributorId?: string;
 }
 
-const CONFIG_DIR = join(homedir(), ".openscience");
+const CONFIG_DIR = join(homedir(), ".openlab");
 const AUTH_FILE = join(CONFIG_DIR, "auth.json");
 
 export function ensureDirs() {
@@ -38,7 +38,7 @@ export async function saveConfig(config: Config): Promise<void> {
 export async function getConfig(): Promise<Config> {
   const config = await loadConfig();
   if (!config) {
-    console.error("Not authenticated. Run `openscience auth` first.");
+    console.error("Not authenticated. Run `openlab auth` first.");
     process.exit(1);
   }
   return config;

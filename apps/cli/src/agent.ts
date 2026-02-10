@@ -3,7 +3,7 @@ import type { LLMProvider } from "./providers";
 import { RESEARCH_SYSTEM_PROMPT, VERIFY_SYSTEM_PROMPT } from "./prompts";
 import { createConvexTools } from "./extensions/convex-tools";
 import { createLabTools } from "./extensions/lab-tools";
-import type { OpenScienceClient } from "./convex";
+import type { OpenLabClient } from "./convex";
 
 const MAX_TURNS = 50;
 
@@ -14,7 +14,7 @@ const MAX_TURNS = 50;
  */
 export async function runTask(
   task: any,
-  client: OpenScienceClient,
+  client: OpenLabClient,
   provider: LLMProvider,
 ): Promise<string> {
   const systemPrompt =

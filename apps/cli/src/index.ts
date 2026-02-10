@@ -2,13 +2,13 @@
 import { Command } from "commander";
 import { runAuthWizard } from "./auth";
 import { getConfig } from "./config";
-import { OpenScienceClient } from "./convex";
+import { OpenLabClient } from "./convex";
 import { startAgentLoop } from "./loop";
 
 const program = new Command();
 
 program
-  .name("openscience")
+  .name("openlab")
   .description("Distributed AI research platform CLI")
   .version("0.0.1");
 
@@ -45,7 +45,7 @@ tasks
   .option("--project <id>", "Filter by project ID")
   .action(async (opts) => {
     const config = await getConfig();
-    const client = new OpenScienceClient(config.convexUrl);
+    const client = new OpenLabClient(config.convexUrl);
     const taskList = await client.listTasks(opts.project);
 
     if (!taskList || taskList.length === 0) {
@@ -77,7 +77,7 @@ tasks
   .description("Claim a single task and print its details")
   .action(async () => {
     const config = await getConfig();
-    const client = new OpenScienceClient(config.convexUrl);
+    const client = new OpenLabClient(config.convexUrl);
 
     if (!config.contributorId) {
       console.log("Registering contributor...");
@@ -103,7 +103,7 @@ program
   .description("Show platform dashboard stats")
   .action(async () => {
     const config = await getConfig();
-    const client = new OpenScienceClient(config.convexUrl);
+    const client = new OpenLabClient(config.convexUrl);
     const stats = await client.getStatus();
 
     if (!stats) {
@@ -111,7 +111,7 @@ program
       return;
     }
 
-    console.log("\nOpen Science Platform Status\n");
+    console.log("\nOpen Lab Platform Status\n");
     console.log(`  Active tasks:       ${stats.activeTasks}`);
     console.log(`  Completed tasks:    ${stats.completedTasks}`);
     console.log(`  Total tasks:        ${stats.totalTasks}`);

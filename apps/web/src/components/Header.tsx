@@ -39,7 +39,7 @@ export function Header() {
           </svg>
         </button>
         <Link href="/" className="text-lg font-bold text-zinc-100">
-          Open Science
+          Open Lab
         </Link>
         <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-xs font-medium text-emerald-400">
           Phase 1

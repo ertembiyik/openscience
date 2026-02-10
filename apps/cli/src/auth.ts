@@ -15,7 +15,7 @@ function prompt(question: string): Promise<string> {
 }
 
 export async function runAuthWizard(): Promise<Config> {
-  console.log("\nOpen Science — Distributed AI Research Platform\n");
+  console.log("\nOpen Lab — Distributed AI Research Platform\n");
   console.log("Configure your contributor credentials.\n");
 
   console.log("LLM Providers:");
@@ -51,10 +51,10 @@ export async function runAuthWizard(): Promise<Config> {
   const config: Config = { provider, apiKey, convexUrl };
   await saveConfig(config);
 
-  console.log("\nAuthentication saved to ~/.openscience/auth.json");
+  console.log("\nAuthentication saved to ~/.openlab/auth.json");
   console.log(`Provider: ${provider}`);
   console.log(`Convex: ${convexUrl}`);
-  console.log("\nRun `openscience run` to start contributing!\n");
+  console.log("\nRun `openlab run` to start contributing!\n");
 
   return config;
 }

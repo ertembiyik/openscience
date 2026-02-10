@@ -1,6 +1,6 @@
-# Task: Implement Open Science Public Dashboard (Phase 1 Scaffold)
+# Task: Implement Open Lab Public Dashboard (Phase 1 Scaffold)
 
-You are implementing the public dashboard for Open Science, a distributed AI research platform. Work ONLY in `apps/web/`.
+You are implementing the public dashboard for Open Lab, a distributed AI research platform. Work ONLY in `apps/web/`.
 
 ## What Exists
 
@@ -11,13 +11,13 @@ You are implementing the public dashboard for Open Science, a distributed AI res
 
 ## Source of Truth
 
-Read `docs/openscience-spec.md` FIRST. The "Public Dashboard" section (~line 878) lists what the dashboard shows. For Phase 1, we're building the scaffold with mock data -- Convex integration comes when the backend agent finishes.
+Read `docs/openlab-spec.md` FIRST. The "Public Dashboard" section (~line 878) lists what the dashboard shows. For Phase 1, we're building the scaffold with mock data -- Convex integration comes when the backend agent finishes.
 
 ## Step 1: Install Convex Client
 
 Add convex dependency and the shared package:
 ```bash
-cd apps/web && bun add convex @openscience/convex
+cd apps/web && bun add convex @openlab/convex
 ```
 
 Create `src/lib/convex.ts`:
@@ -52,7 +52,7 @@ Create `src/components/ui/` with basic components:
 Replace `src/app/page.tsx` with the main dashboard:
 
 Layout:
-1. **Header** -- "Open Science" logo/title, dark mode toggle, link to GitHub
+1. **Header** -- "Open Lab" logo/title, dark mode toggle, link to GitHub
 2. **Stats row** -- 4 StatCards: Active Projects, Tasks Completed, Verified Findings, Contributors
 3. **Two-column layout below**:
    - Left: Recent Findings feed (verified findings, most recent first)

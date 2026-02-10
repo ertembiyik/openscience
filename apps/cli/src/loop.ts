@@ -1,4 +1,4 @@
-import { OpenScienceClient } from "./convex";
+import { OpenLabClient } from "./convex";
 import { createProvider } from "./providers";
 import { runTask } from "./agent";
 import type { Config } from "./config";
@@ -11,15 +11,15 @@ interface LoopOptions {
 
 export async function startAgentLoop(config: Config, options: LoopOptions) {
   if (!config.convexUrl) {
-    console.error("No Convex URL configured. Run `openscience auth` first.");
+    console.error("No Convex URL configured. Run `openlab auth` first.");
     process.exit(1);
   }
   if (!config.apiKey) {
-    console.error("No API key configured. Run `openscience auth` first.");
+    console.error("No API key configured. Run `openlab auth` first.");
     process.exit(1);
   }
 
-  const client = new OpenScienceClient(config.convexUrl);
+  const client = new OpenLabClient(config.convexUrl);
   const provider = createProvider(config.provider, config.apiKey);
   let running = true;
 

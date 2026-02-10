@@ -1,7 +1,7 @@
 import type { Tool } from "../tools";
-import type { OpenScienceClient } from "../convex";
+import type { OpenLabClient } from "../convex";
 
-export function createLabTools(client: OpenScienceClient, task: any): Tool[] {
+export function createLabTools(client: OpenLabClient, task: any): Tool[] {
   return [
     {
       name: "lab_notebook",

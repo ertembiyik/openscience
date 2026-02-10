@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Open Science — Distributed AI Research",
+  title: "Open Lab — Distributed AI Research",
   description:
     "A Folding@Home for AI-powered research. Contributors run agents that work on research tasks coordinated by a central server.",
 };

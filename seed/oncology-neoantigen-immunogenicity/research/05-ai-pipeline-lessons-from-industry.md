@@ -126,7 +126,7 @@ Tests ~3 million antibody designs per week. Goes from AI-designed antibodies to 
 
 **Architecture**: epitope-conditioned structure generation -> paired CDR sequence design -> co-folding-based scoring.
 
-### Baker Lab (University of Washington) -- Open Science Gold Standard
+### Baker Lab (University of Washington) -- Open Lab Gold Standard
 
 David Baker won 2024 Nobel Prize. **All tools MIT-licensed** (free for academic AND commercial use):
 - **RFdiffusion**: De novo protein structure design from scratch

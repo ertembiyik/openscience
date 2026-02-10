@@ -1,4 +1,4 @@
-# Open Science -- Distributed Research Platform Spec
+# Open Lab -- Distributed Research Platform Spec
 
 ## Vision
 
@@ -30,7 +30,7 @@ Cancer research is the first project. The platform generalizes to any field.
 
 ### Three Components
 
-1. **CLI Agent** (`openscience`): Installed by contributors. Runs pi-mono locally with contributor's own LLM API key. Pulls tasks from Convex, executes them, pushes results back.
+1. **CLI Agent** (`openlab`): Installed by contributors. Runs pi-mono locally with contributor's own LLM API key. Pulls tasks from Convex, executes them, pushes results back.
 
 2. **Coordination Server** (Convex): Central brain. Stores tasks (DAG), knowledge base, tickets, contributor profiles, project config. Real-time sync. File storage for research artifacts.
 
@@ -514,21 +514,21 @@ Scientist                    Dashboard                   Maintainer
 
 ---
 
-## CLI Agent (`openscience`)
+## CLI Agent (`openlab`)
 
 ### Install & Setup
 
 ```bash
 # Install globally
-bun add -g openscience
+bun add -g openlab
 
 # First run: interactive setup wizard
-openscience
+openlab
 
 # Wizard flow:
 # 1. Welcome + mission statement
 # 2. Pick LLM provider (Anthropic, OpenAI, Google, etc.)
-# 3. Enter API key (stored locally in ~/.openscience/auth.json)
+# 3. Enter API key (stored locally in ~/.openlab/auth.json)
 # 4. Select project(s) to contribute to
 # 5. Optional: configure GPU availability
 # 6. Start contributing!
@@ -591,7 +591,7 @@ The CLI is **stateless and generic**. It doesn't know about cancer research or a
 
 ### Sandboxing
 
-Agent workspace is restricted to `~/.openscience/workspace/`. The agent cannot:
+Agent workspace is restricted to `~/.openlab/workspace/`. The agent cannot:
 - Read files outside the workspace
 - Execute commands that affect the host system
 - Access network resources beyond approved APIs (IEDB, PubMed, Convex)
@@ -1025,7 +1025,7 @@ New research projects are just Convex records with their own task trees and know
 ## Security Model
 
 ### Contributor Machines
-- Agent sandboxed to `~/.openscience/workspace/`
+- Agent sandboxed to `~/.openlab/workspace/`
 - No access to host filesystem, SSH keys, etc.
 - Network restricted to approved APIs + Convex
 - API keys stored locally, never sent to server
